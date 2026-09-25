@@ -8,11 +8,13 @@ pipeline {
 		}
 		
 		stage("installing dependencies"){
-			steps{sh "pip3 install -r requirements.txt"}
+			steps{sh '''
+				python3 -m venv venv
+				  ./venv/bin/pip install -r requirements.txt'''}
 		}
 		
 		stage("Testing stage"){
-			steps{sh "pytest"}
+			steps{sh "./venv/bin/pytest"}
 		}
 		
 		stage("Build docker image"){
@@ -24,7 +26,7 @@ pipeline {
 			docker rm -f flask_app || true
 			
 			docker run -d \
-			-p 5005:5000 --name flash_app \
+			-p 5005:5000 --name flask_app \
 			flask_server 
 			'''}
 		}
