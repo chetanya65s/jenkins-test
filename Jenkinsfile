@@ -24,6 +24,25 @@ pipeline {
 			
 			'''}
 		}
+
+		stage("Push to Docker Hub") {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'docker-hub-creds',
+            usernameVariable: 'DOCKER_USERNAME',
+            passwordVariable: 'DOCKER_PASSWORD'
+        )]) {
+            sh '''
+                echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+                docker push chetanyagarg/flask_server:latest
+                docker push chetanyagarg/flask_server:${BUILD_NUMBER}
+
+                docker logout
+            '''
+        }
+    }
+		}
 		
 		stage("deploy"){
 			steps{sh ''' 
@@ -31,7 +50,7 @@ pipeline {
 			
 			docker run -d \
 			-p 5005:5000 --name flask_app \
-			flask_server 
+			chetanyagarg/flask_server:latest
 			'''}
 		}
 	}
