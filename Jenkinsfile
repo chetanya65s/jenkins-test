@@ -18,7 +18,11 @@ pipeline {
 		}
 		
 		stage("Build docker image"){
-			steps{sh "docker build -t flask_server ."}
+			steps{sh '''
+			docker build -t chetanyagarg/flask_server:latest .
+			docker tag chetanyagarg/flask_server:latest chetanyagarg/flask_server:${BUILD_NUMBER}
+			
+			'''}
 		}
 		
 		stage("deploy"){
