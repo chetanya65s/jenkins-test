@@ -46,11 +46,9 @@ pipeline {
 		
 		stage("deploy"){
 			steps{sh ''' 
-			docker rm -f flask_app || true
+			kubectl set image deployment/flask-deployment flask-container=chetanyagarg/flask_server:${BUILD_NUMBER}
 			
-			docker run -d \
-			-p 5005:5000 --name flask_app \
-			chetanyagarg/flask_server:latest
+			kubectl rollout status deployment/flask-deployment
 			'''}
 		}
 	}
