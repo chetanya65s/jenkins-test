@@ -5,4 +5,4 @@ def test_home():
     response = client.get("/")
 
     assert response.status_code == 200
-    assert response.data == b"return "Hello from Jenkins CI/CD - Version 2!"
+    assert response.data == b"Hello from Jenkins CI/CD - Version 2!"
