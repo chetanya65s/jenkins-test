@@ -16,7 +16,7 @@ spec:
       labels:
         app: flask-deployment
 
-       spec:
+  spec:
       containers:
         - name: flask-container
           image: chetanyagarg/flask_server:11
