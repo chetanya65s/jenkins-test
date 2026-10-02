@@ -16,23 +16,31 @@ spec:
       labels:
         app: flask-deployment
 
-    spec:
+       spec:
       containers:
-  - name: flask-container
-    image: chetanyagarg/flask_server:11
-    ports:
-      - containerPort: 5000
+        - name: flask-container
+          image: chetanyagarg/flask_server:11
+          ports:
+            - containerPort: 5000
 
-    readinessProbe:
-      httpGet:
-        path: /health
-        port: 5000
-      initialDelaySeconds: 5
-      periodSeconds: 10
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
 
-    livenessProbe:
-      httpGet:
-        path: /health
-        port: 5000
-      initialDelaySeconds: 10
-      periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
